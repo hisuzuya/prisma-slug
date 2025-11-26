@@ -2,7 +2,7 @@
   "name": "example",
   "scripts": {
     "dev": "tsx index.ts",
-    "test": "tsx test.ts"
+    "test": "tsx index.ts"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0"
