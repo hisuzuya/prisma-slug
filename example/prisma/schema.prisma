@@ -2,19 +2,20 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["clientExtensions"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "sqlite"
-  url      = "file:./dev.db"
+  url      = env("DATABASE_URL")
 }
 
 model User {
-  id    Int    @id @default(autoincrement())
-  email String @unique
-  name  String
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  firstName String
+  lastName  String
+  username  String   @unique /// @slug(from: ['firstName', 'lastName']) // firstName + lastNameから自動生成されます
 
   posts Post[]
 }
@@ -22,11 +23,19 @@ model User {
 model Post {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @updatedAt
   title     String
   content   String?
+  slug      String   @unique /// @slug(from: ['title']) // titleから自動生成されます
   published Boolean  @default(false)
 
   author   User @relation(fields: [authorId], references: [id])
   authorId Int
+}
+
+model Product {
+  id       Int    @id @default(autoincrement())
+  name     String
+  category String
+  sku      String @unique /// @slug(from: ['name'], prefix: 'prod-', postfix: '-item', mode: 'random') // nameから自動生成されます
 }
