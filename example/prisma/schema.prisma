@@ -15,7 +15,7 @@ model User {
   email     String   @unique
   firstName String
   lastName  String
-  username  String   @unique @default("") /// @slug(from: ['firstName', 'lastName']) // firstName + lastNameから自動生成されます
+  username  String   @unique @default("") /// @slug(from: ['firstName', 'lastName']) // 複数フィールドから生成
 
   posts Post[]
 }
@@ -26,22 +26,18 @@ model Post {
   updatedAt DateTime @updatedAt
   title     String
   content   String?
-  slug      String   @unique @default("") /// @slug(from: ['title']) // titleから自動生成されます
+
+  // 様々なスラグパターンをテスト
+  slug              String @unique @default("") /// @slug(from: ['title']) // 基本的なスラグ
+  slugWithPrefix    String @unique @default("") /// @slug(from: ['title'], prefix: 'blog-') // プレフィックス付き
+  slugWithPostfix   String @unique @default("") /// @slug(from: ['title'], postfix: '-post') // ポストフィックス付き
+  slugWithBoth      String @unique @default("") /// @slug(from: ['title'], prefix: 'article-', postfix: '-item') // 両方
+  slugShort         String @unique @default("") /// @slug(from: ['title'], maxLength: 20) // maxLength上書き
+  slugRandom        String @unique @default("") /// @slug(from: ['title'], mode: 'random') // ランダムモード
+  slugRequired      String @unique @default("") /// @slug(from: ['title'], required: true) // 必須
+
   published Boolean  @default(false)
 
   author   User @relation(fields: [authorId], references: [id])
   authorId Int
-}
-
-model Product {
-  id       Int    @id @default(autoincrement())
-  name     String
-  category String
-  sku      String @unique @default("") /// @slug(from: ['name'], prefix: 'prod-', postfix: '-item') // nameから自動生成されます
-}
-
-model Article {
-  id        Int    @id @default(autoincrement())
-  title     String
-  slug      String @unique @default("") /// @slug(from: ['title'], prefix: 'blog-') // titleから自動生成されます（prefixのみ）
 }
