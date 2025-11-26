@@ -37,5 +37,11 @@ model Product {
   id       Int    @id @default(autoincrement())
   name     String
   category String
-  sku      String @unique @default("") /// @slug(from: ['name'], prefix: 'prod-', postfix: '-item', mode: 'random') // nameから自動生成されます
+  sku      String @unique @default("") /// @slug(from: ['name'], prefix: 'prod-', postfix: '-item') // nameから自動生成されます
+}
+
+model Article {
+  id        Int    @id @default(autoincrement())
+  title     String
+  slug      String @unique @default("") /// @slug(from: ['title'], prefix: 'blog-') // titleから自動生成されます（prefixのみ）
 }

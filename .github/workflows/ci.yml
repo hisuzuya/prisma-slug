@@ -21,21 +21,20 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Build
         run: npm run build
 
-      - name: Run example
+      - name: Run tests
         working-directory: ./example
         run: |
           npm install
           npx prisma generate
           npx prisma migrate deploy
-          npm run dev
+          npm run test
 
   lint:
     runs-on: ubuntu-latest
@@ -47,10 +46,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
-          cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Check TypeScript
         run: npx tsc --noEmit
