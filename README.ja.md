@@ -22,18 +22,20 @@ npm install prisma-extension-slug
 
 ### 1. Prisma スキーマに `/// @slug` アノテーションを追加
 
+**重要**: slugフィールドに `@default("")` を追加することで、TypeScriptの型定義でオプショナルになります。これにより、slug値を明示的に指定せずにレコードを作成でき、Extensionが自動的に生成します。
+
 ```prisma
 model Post {
   id    Int    @id @default(autoincrement())
   title String
-  slug  String @unique /// @slug(from: ['title']) // titleから自動生成されます
+  slug  String @unique @default("") /// @slug(from: ['title'])
 }
 
 model User {
   id        Int    @id @default(autoincrement())
   firstName String
   lastName  String
-  username  String @unique /// @slug(from: ['firstName', 'lastName']) // firstName + lastNameから自動生成されます
+  username  String @unique @default("") /// @slug(from: ['firstName', 'lastName'])
 }
 ```
 
@@ -75,7 +77,7 @@ console.log(updated.slug); // "new-title"
 ```prisma
 model Post {
   title String
-  slug  String @unique /// @slug(from: ['title'])
+  slug  String @unique @default("") /// @slug(from: ['title'])
 }
 ```
 
@@ -138,7 +140,7 @@ model Product {
   id       Int    @id @default(autoincrement())
   name     String
   category String
-  sku      String @unique /// @slug(from: ['name'], prefix: 'prod-', postfix: '-item', mode: 'random', maxLength: 50)
+  sku      String @unique @default("") /// @slug(from: ['name'], prefix: 'prod-', postfix: '-item', mode: 'random', maxLength: 50)
 }
 ```
 
@@ -170,7 +172,7 @@ const prisma = new PrismaClient().$extends(
 model Post {
   id    Int    @id @default(autoincrement())
   title String
-  slug  String @unique /// @slug(from: ['title'])
+  slug  String @unique @default("") /// @slug(from: ['title'])
 }
 ```
 
@@ -193,7 +195,7 @@ const post = await prisma.post.create({
 model User {
   firstName String
   lastName  String
-  username  String @unique /// @slug(from: ['firstName', 'lastName'])
+  username  String @unique @default("") /// @slug(from: ['firstName', 'lastName'])
 }
 ```
 
@@ -216,7 +218,7 @@ const user = await prisma.user.create({
 ```prisma
 model Post {
   title String
-  slug  String @unique /// @slug(from: ['title'], prefix: 'blog-')
+  slug  String @unique @default("") /// @slug(from: ['title'], prefix: 'blog-')
 }
 ```
 
