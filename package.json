@@ -1,6 +1,6 @@
 {
   "name": "prisma-extension-slug",
-  "version": "0.1.1",
+  "version": "0.1.0",
   "description": "Prisma Client Extension for automatic slug generation with support for unique constraints, prefix/postfix, and multiple generation modes",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
