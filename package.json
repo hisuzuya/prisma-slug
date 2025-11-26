@@ -1,20 +1,39 @@
 {
   "name": "prisma-extension-slug",
   "version": "0.1.0",
-  "author": "",
   "description": "Prisma Client Extension for automatic slug generation with support for unique constraints, prefix/postfix, and multiple generation modes",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "README.ja.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YOUR_USERNAME/prisma-slug.git"
+  },
+  "bugs": {
+    "url": "https://github.com/YOUR_USERNAME/prisma-slug/issues"
+  },
+  "homepage": "https://github.com/YOUR_USERNAME/prisma-slug#readme",
   "keywords": [
     "prisma",
     "@prisma/client",
     "extension",
     "slug",
-    "slugify"
+    "slugify",
+    "url-slug",
+    "prisma-extension",
+    "prisma-client-extension"
   ],
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "scripts": {
-    "build": "tsc"
-  },
+  "author": "",
+  "license": "MIT",
   "peerDependencies": {
     "@prisma/client": "^5.0.0"
   },
@@ -23,5 +42,8 @@
     "@types/node": "^24.10.1",
     "prisma": "^5.22.0",
     "typescript": "^5.4.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }

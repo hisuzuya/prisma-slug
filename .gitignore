@@ -1,11 +1,39 @@
 # Dependency directories
 node_modules/
 
+# Build output
 dist/
 
-# dotenv environment variable files
+# Environment files
 .env
+.env.local
+.env.*.local
 
+# Package files
 package-lock.json
 *.tgz
-dev.db
+
+# Database files
+*.db
+*.db-journal
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Testing
+coverage/
+.nyc_output/

@@ -1,5 +1,7 @@
 # Prisma Slug Extension
 
+[日本語ドキュメント (Japanese Documentation)](./README.ja.md)
+
 Prisma Client Extension for automatic slug generation with support for prefix/postfix, multiple generation modes, and dependency tracking.
 
 ## Features

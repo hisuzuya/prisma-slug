@@ -1,0 +1,35 @@
+# Source files
+src/
+tsconfig.json
+
+# Tests
+tests/
+*.test.ts
+*.spec.ts
+
+# Example
+example/
+
+# Development files
+.git/
+.github/
+*.md
+!README.md
+CONTRIBUTING.md
+CODE_OF_CONDUCT.md
+
+# Build artifacts
+*.log
+*.tgz
+node_modules/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
