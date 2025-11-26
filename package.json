@@ -16,12 +16,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/YOUR_USERNAME/prisma-slug.git"
+    "url": "git+https://github.com/hisuzuya/prisma-slug.git"
   },
   "bugs": {
-    "url": "https://github.com/YOUR_USERNAME/prisma-slug/issues"
+    "url": "https://github.com/hisuzuya/prisma-slug/issues"
   },
-  "homepage": "https://github.com/YOUR_USERNAME/prisma-slug#readme",
+  "homepage": "https://github.com/hisuzuya/prisma-slug#readme",
   "keywords": [
     "prisma",
     "@prisma/client",
