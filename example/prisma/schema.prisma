@@ -15,7 +15,7 @@ model User {
   email     String   @unique
   firstName String
   lastName  String
-  username  String   @unique /// @slug(from: ['firstName', 'lastName']) // firstName + lastNameから自動生成されます
+  username  String   @unique @default("") /// @slug(from: ['firstName', 'lastName']) // firstName + lastNameから自動生成されます
 
   posts Post[]
 }
@@ -26,7 +26,7 @@ model Post {
   updatedAt DateTime @updatedAt
   title     String
   content   String?
-  slug      String   @unique /// @slug(from: ['title']) // titleから自動生成されます
+  slug      String   @unique @default("") /// @slug(from: ['title']) // titleから自動生成されます
   published Boolean  @default(false)
 
   author   User @relation(fields: [authorId], references: [id])
@@ -37,5 +37,5 @@ model Product {
   id       Int    @id @default(autoincrement())
   name     String
   category String
-  sku      String @unique /// @slug(from: ['name'], prefix: 'prod-', postfix: '-item', mode: 'random') // nameから自動生成されます
+  sku      String @unique @default("") /// @slug(from: ['name'], prefix: 'prod-', postfix: '-item', mode: 'random') // nameから自動生成されます
 }
