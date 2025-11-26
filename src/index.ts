@@ -6,39 +6,47 @@ import { SlugConfigurationError } from './utils/errors';
 import { autoLoadSchemaConfig } from './parser/schema';
 
 export { SlugGenerationError, SlugConfigurationError } from './utils/errors';
+export type { SlugExtensionConfig, ModelSlugConfig, FieldSlugConfig } from './types';
 
 /**
  * slug フィールドを処理する共通ロジック
  */
 async function processSlugFields(
   model: string,
-  data: Record<string, any>,
-  modelConfigs: Record<string, any>,
+  data: Record<string, unknown>,
+  modelConfigs: Record<string, unknown>,
   maxLength: number,
   isUpdate: boolean = false
 ): Promise<void> {
   const modelConfig = modelConfigs[model];
-  if (!modelConfig) {
+  if (!modelConfig || typeof modelConfig !== 'object' || modelConfig === null) {
     return;
   }
 
-  for (const [fieldName, fieldConfig] of Object.entries(modelConfig.fields)) {
+  const config = modelConfig as { fields?: Record<string, unknown> };
+  if (!config.fields) {
+    return;
+  }
+
+  for (const [fieldName, fieldConfig] of Object.entries(config.fields)) {
     // ユーザーが明示的に slug を指定している場合はスキップ
     if (data[fieldName] !== undefined) {
       continue;
     }
 
+    const slugConfig = fieldConfig as FieldSlugConfig;
+
     // update の場合、依存フィールドが変更されているかチェック
-    if (isUpdate && !hasChangedFields(data, (fieldConfig as FieldSlugConfig).from)) {
+    if (isUpdate && !hasChangedFields(data, slugConfig.from)) {
       continue;
     }
 
     // 依存フィールドがすべて空かチェック
-    const allEmpty = areAllFieldsEmpty(data, (fieldConfig as FieldSlugConfig).from);
+    const allEmpty = areAllFieldsEmpty(data, slugConfig.from);
     if (allEmpty) {
-      if ((fieldConfig as FieldSlugConfig).required) {
+      if (slugConfig.required) {
         throw new SlugConfigurationError(
-          `Required fields [${(fieldConfig as FieldSlugConfig).from.join(', ')}] for slug field '${fieldName}' are empty`
+          `Required fields [${slugConfig.from.join(', ')}] for slug field '${fieldName}' are empty`
         );
       }
       // required: false の場合は slug 生成をスキップ
@@ -46,13 +54,13 @@ async function processSlugFields(
     }
 
     // slug を生成
-    const fieldMaxLength = (fieldConfig as FieldSlugConfig).maxLength ?? maxLength;
+    const fieldMaxLength = slugConfig.maxLength ?? maxLength;
     const baseSlug = generateSlugFromFields(
-      (fieldConfig as FieldSlugConfig).from,
+      slugConfig.from,
       data,
       {
-        prefix: (fieldConfig as FieldSlugConfig).prefix,
-        postfix: (fieldConfig as FieldSlugConfig).postfix,
+        prefix: slugConfig.prefix,
+        postfix: slugConfig.postfix,
         maxLength: fieldMaxLength,
       }
     );
@@ -88,7 +96,7 @@ export function slugExtension(options?: {
           if (args.data && typeof args.data === 'object') {
             await processSlugFields(
               model,
-              args.data as Record<string, any>,
+              args.data as Record<string, unknown>,
               modelConfigs,
               maxLength,
               false
@@ -102,7 +110,7 @@ export function slugExtension(options?: {
           if (args.data && typeof args.data === 'object') {
             await processSlugFields(
               model,
-              args.data as Record<string, any>,
+              args.data as Record<string, unknown>,
               modelConfigs,
               maxLength,
               true
@@ -117,7 +125,7 @@ export function slugExtension(options?: {
           if (args.create && typeof args.create === 'object') {
             await processSlugFields(
               model,
-              args.create as Record<string, any>,
+              args.create as Record<string, unknown>,
               modelConfigs,
               maxLength,
               false
@@ -128,7 +136,7 @@ export function slugExtension(options?: {
           if (args.update && typeof args.update === 'object') {
             await processSlugFields(
               model,
-              args.update as Record<string, any>,
+              args.update as Record<string, unknown>,
               modelConfigs,
               maxLength,
               true

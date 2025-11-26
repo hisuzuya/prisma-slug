@@ -41,7 +41,7 @@ export function slugify(text: string, maxLength: number = 255): string {
  */
 export function generateSlugFromFields(
   fields: string[],
-  data: Record<string, any>,
+  data: Record<string, unknown>,
   options: {
     prefix?: string;
     postfix?: string;
@@ -50,7 +50,10 @@ export function generateSlugFromFields(
 ): string {
   // 1. フィールドの値を抽出
   const values = fields
-    .map(f => data[f] || '')
+    .map(f => {
+      const value = data[f];
+      return value ? String(value) : '';
+    })
     .filter(Boolean);
 
   // 2. 結合して基本 slug を生成

@@ -6,7 +6,7 @@
  * @returns フィールド値の配列（空値は除外）
  */
 export function extractFieldValues(
-  data: Record<string, any>,
+  data: Record<string, unknown>,
   fieldNames: string[]
 ): string[] {
   return fieldNames.map(name => {
@@ -26,7 +26,7 @@ export function extractFieldValues(
  * @returns いずれかのフィールドが変更されている場合 true
  */
 export function hasChangedFields(
-  data: Record<string, any>,
+  data: Record<string, unknown>,
   fieldNames: string[]
 ): boolean {
   return fieldNames.some(name => data[name] !== undefined);
@@ -40,7 +40,7 @@ export function hasChangedFields(
  * @returns すべて空の場合 true
  */
 export function areAllFieldsEmpty(
-  data: Record<string, any>,
+  data: Record<string, unknown>,
   fieldNames: string[]
 ): boolean {
   return fieldNames.every(name => {
